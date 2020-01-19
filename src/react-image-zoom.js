@@ -2,49 +2,38 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImageZoom from 'js-image-zoom';
 
-class ReactImageZoom extends React.Component {
-  constructor(props) {
-    super(props);
-    this.container = undefined;
-    this.getRef = this.getRef.bind(this);
-  }
+const ReactImageZoom = props => {
+  let imageZoom;
+  let container;
 
-  componentDidMount() {
-    this.rerenderImageZoom(this.props);
-  }
-
-  UNSAFE_componentWillUnmount() {
-    this.imageZoom.kill();
-    this.imageZoom = void 0;
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.props !== nextProps) {
-      this.kill();
-      this.rerenderImageZoom(nextProps);
+  React.useEffect(() => {
+    if (imageZoom) {
+      imageZoom.kill();
+      imageZoom = new ImageZoom(container, props);
     }
-  }
+  }, [props.img]);
 
-  rerenderImageZoom(props) {
-    this.imageZoom = new ImageZoom(this.container, JSON.parse(JSON.stringify(props)));
-  }
+  React.useEffect(() => {
+    rerenderImageZoom(props);
+    return kill;
+  }, [props]);
 
-  setup() {
-    this.imageZoom.setup();
-  }
+  const rerenderImageZoom = props => {
+    imageZoom = new ImageZoom(container, props);
+  };
 
-  kill() {
-    this.imageZoom.kill();
-  }
+  const kill = () => {
+    imageZoom.kill();
+    imageZoom = void 0;
+  };
 
-  getRef(ref) {
-    this.container = ref;
-  }
+  const getRef = ref => {
+    container = ref;
+  };
 
-  render() {
-    return <div ref={this.getRef}/>;
-  }
-}
+  return <div ref={getRef}/>;
+
+};
 
 ReactImageZoom.propTypes = {
   width: PropTypes.number,
